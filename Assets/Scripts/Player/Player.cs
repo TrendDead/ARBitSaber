@@ -5,31 +5,23 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
-    private TMP_Text _text;
-
-    private Score score;
+    private int _hitpoints;
+    private int _score;
 
     private void Start()
     {
-        score = FindObjectOfType<Score>();
+       
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Ring box))
+        if (other.TryGetComponent(out Ring ring))
         {
-            score.AddScore();
-            Destroy(box.gameObject);
+            _score += ring.DestructionByThePlayer();
         }
-        else
+        if (other.TryGetComponent(out Bomb bomb))
         {
-            Bomb bomb = other.gameObject.GetComponentInParent<Bomb>();
-            if (bomb != null)
-            {
-                score.AddScore(-10);
-                Destroy(bomb.gameObject);
-            }
+            _hitpoints -= bomb.DestructionByThePlayer();
         }
     }
 

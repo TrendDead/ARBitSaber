@@ -19,7 +19,7 @@ public class Spawner : MonoBehaviour
 
     private float _timeGame;
 
-    private void Awake()
+    private void OnEnable()
     {
         _timeGame = _timeBeforeStart;
         SortList(_whenWereWhatSpawn);
@@ -31,8 +31,6 @@ public class Spawner : MonoBehaviour
         if (_whenWereWhatSpawn.Count > 0 && _timeGame >= _whenWereWhatSpawn[0]._timeSpawn)
         {
             Spawn();
-            Debug.Log(_timeGame);
-            Debug.Log("_timeGame");
         }
     }
 

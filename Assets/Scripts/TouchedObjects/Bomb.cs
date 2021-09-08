@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Bomb : MonoBehaviour
+public class Bomb : MonoBehaviour, ITouch
 {
+    [SerializeField]
+    private int _scoreMinus; //урон возвращающийся от бомбы
+
     private SceneControl _speedRing;
-    private int _damage; //урон возвращающийся от бомбы
     void Start()
     {
         _speedRing = FindObjectOfType<SceneControl>();
@@ -15,17 +17,18 @@ public class Bomb : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.z < 0.1f)
+        if (transform.position.z < -0.1f)
             DestructionByPosition();
     }
     public int DestructionByThePlayer() //добавить эффект взрыва
     {
         Destroy(gameObject);
-        return _damage; 
+        return -_scoreMinus;
     }
 
-    private void DestructionByPosition()
+    public void DestructionByPosition()
     {
         Destroy(gameObject);
     }
+
 }

@@ -1,15 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Ring : MonoBehaviour
+public class Ring : MonoBehaviour, ITouch
 {
+    [SerializeField]
+    private int _scorePlus;
+    [SerializeField]
+    private int _scoreMinusCoff;
+
+    [SerializeField]
+    private Player _player;
+
     private SceneControl _speedRing;
-    private int _score; //Баллы от подбирания кольца
-    private int _damage; //урон возвращающийся от пропуска кольца
     void Start()
     {
+        _player = FindObjectOfType<Player>();
         _speedRing = FindObjectOfType<SceneControl>();
         gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, -1f) * _speedRing.SpeedScene;
     }
@@ -18,18 +26,15 @@ public class Ring : MonoBehaviour
         if (transform.position.z < -0.1f)
             DestructionByPosition();
     }
-    public int DestructionByThePlayer() //Добавить эффект
+    public int DestructionByThePlayer()
     {
-        Debug.Log(Time.time);
-        Debug.Log("player");
         Destroy(gameObject);
-        return _score;
+        return _scorePlus;
     }
 
-    private void DestructionByPosition() //придумать как передовать урон игроку
+    public void DestructionByPosition()
     {
-        Debug.Log(Time.time);
-        Debug.Log("pos");
-        Destroy(gameObject);
+        _player.ScoreChanger(this, _scoreMinusCoff * -1);
     }
+
 }
